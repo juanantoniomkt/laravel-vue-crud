@@ -4,10 +4,14 @@
                 
                 <p>{{pensamiento.id}} - Publicado el {{pensamiento.fecha}}</p>
 
-                <p>{{pensamiento.nombre}}</p>
+                <input v-if="editMode" class="form-control" type="text" v-model="pensamiento.nombre" name="pensamientoEdit" id="pensamientoEdit">
+                <p v-else>{{pensamiento.nombre}}</p>
 
-                <button class="btn btn-primary col-3">Editar pensamiento</button>
-                <button class="btn btn-danger col-3">Borrar pensamiento</button>
+                <button v-if="editMode" class="btn btn-success col-3" v-on:click='onClickUpdate()'>Guardar cambios</button>
+                <button v-else class="btn btn-primary col-3" v-on:click='onClickEdit()'>Editar pensamiento</button>
+
+
+                <button class="btn btn-danger col-3" v-on:click='onClickDelete()'>Borrar pensamiento</button>
             </div>
 
 </template>
@@ -17,13 +21,39 @@
 
         props: ['pensamiento'],
 
-        data(){
-            return{}
+        data: function () 
+        {
+        return {
+
+            editMode: false
+
+            }
         },
 
 
         mounted() {
             console.log('Component mounted.')
+        },
+
+        methods: 
+        {
+            onClickDelete()
+            {
+                
+                this.$emit('delete');
+            },
+
+            onClickEdit()
+            {
+                this.editMode= true;
+            },
+
+            onClickUpdate()
+            {
+                this.editMode = false;
+                this.$emit('update', pensamiento);
+
+            }
         }
     }
 </script>

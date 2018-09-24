@@ -47383,13 +47383,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         nuevoPensamiento: function nuevoPensamiento() {
+
+            var params = {
+                nombre: this.nombre
+            };
+
+            axios.post('/pensamientos', params).then(function (response) {
+                return console.log(response);
+            });
+
             var pensamiento = {
-                id: 2,
                 nombre: this.nombre,
                 fecha: '11/22/3333'
             };
 
             this.$emit('new', pensamiento);
+            this.nombre = '';
         }
     }
 
@@ -47540,16 +47549,40 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 
     props: ['pensamiento'],
 
     data: function data() {
-        return {};
+        return {
+
+            editMode: false
+
+        };
     },
+
     mounted: function mounted() {
         console.log('Component mounted.');
+    },
+
+
+    methods: {
+        onClickDelete: function onClickDelete() {
+
+            this.$emit('delete');
+        },
+        onClickEdit: function onClickEdit() {
+            this.editMode = true;
+        },
+        onClickUpdate: function onClickUpdate() {
+            this.editMode = false;
+            this.$emit('update', pensamiento);
+        }
     }
 });
 
@@ -47570,15 +47603,72 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("p", [_vm._v(_vm._s(_vm.pensamiento.nombre))]),
+    _vm.editMode
+      ? _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.pensamiento.nombre,
+              expression: "pensamiento.nombre"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: {
+            type: "text",
+            name: "pensamientoEdit",
+            id: "pensamientoEdit"
+          },
+          domProps: { value: _vm.pensamiento.nombre },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.$set(_vm.pensamiento, "nombre", $event.target.value)
+            }
+          }
+        })
+      : _c("p", [_vm._v(_vm._s(_vm.pensamiento.nombre))]),
     _vm._v(" "),
-    _c("button", { staticClass: "btn btn-primary col-3" }, [
-      _vm._v("Editar pensamiento")
-    ]),
+    _vm.editMode
+      ? _c(
+          "button",
+          {
+            staticClass: "btn btn-success col-3",
+            on: {
+              click: function($event) {
+                _vm.onClickUpdate()
+              }
+            }
+          },
+          [_vm._v("Guardar cambios")]
+        )
+      : _c(
+          "button",
+          {
+            staticClass: "btn btn-primary col-3",
+            on: {
+              click: function($event) {
+                _vm.onClickEdit()
+              }
+            }
+          },
+          [_vm._v("Editar pensamiento")]
+        ),
     _vm._v(" "),
-    _c("button", { staticClass: "btn btn-danger col-3" }, [
-      _vm._v("Borrar pensamiento")
-    ])
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-danger col-3",
+        on: {
+          click: function($event) {
+            _vm.onClickDelete()
+          }
+        }
+      },
+      [_vm._v("Borrar pensamiento")]
+    )
   ])
 }
 var staticRenderFns = []
@@ -47658,23 +47748,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
-            pensamientos: [{
-                'id': '1',
-                'nombre': 'quiero ir a la playa',
-                'fecha': '01/08/1990'
-            }, {
-                'id': '2',
-                'nombre': 'quiero beber agua',
-                'fecha': '01/08/2001'
-            }, {
-                'id': '3',
-                'nombre': 'no quiero cenar',
-                'fecha': '01/08/2002'
-            }]
+            pensamientos: []
         };
     },
 
@@ -47682,6 +47762,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         agregarPensamiento: function agregarPensamiento(pensamiento) {
             this.pensamientos.unshift(pensamiento);
+        },
+        borrarPensamiento: function borrarPensamiento(index) {
+            this.pensamientos.splice(index, 1);
+        },
+        actualizarPensamiento: function actualizarPensamiento(index, pensamiento) {
+            this.pensamientos[index] = pensamiento;
         }
     },
 
@@ -47704,10 +47790,21 @@ var render = function() {
     [
       _c("form-component", { on: { new: _vm.agregarPensamiento } }),
       _vm._v(" "),
-      _vm._l(_vm.pensamientos, function(pensamiento) {
+      _vm._l(_vm.pensamientos, function(pensamiento, index) {
         return _c("pensamiento-component", {
           key: pensamiento.id,
-          attrs: { pensamiento: pensamiento }
+          attrs: { pensamiento: pensamiento },
+          on: {
+            update: function($event) {
+              var i = arguments.length,
+                argsArray = Array(i)
+              while (i--) argsArray[i] = arguments[i]
+              _vm.actualizarPensamiento.apply(void 0, [index].concat(argsArray))
+            },
+            delete: function($event) {
+              _vm.borrarPensamiento(index)
+            }
+          }
         })
       })
     ],

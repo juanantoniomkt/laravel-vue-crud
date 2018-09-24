@@ -3,9 +3,11 @@
 
         <form-component @new="agregarPensamiento"></form-component>
         <pensamiento-component 
-            v-for="pensamiento in pensamientos" 
+            v-for="(pensamiento, index) in pensamientos" 
             :key="pensamiento.id"
             :pensamiento="pensamiento"
+            @update="actualizarPensamiento(index, ...arguments)"
+            @delete="borrarPensamiento(index)"
             >
         </pensamiento-component>
 
@@ -18,23 +20,7 @@
         data(){
             return{
                 pensamientos:[
-                    {
-                    'id':'1',
-                    'nombre': 'quiero ir a la playa',
-                    'fecha': '01/08/1990'
-                    },
 
-                    {
-                    'id':'2',
-                    'nombre': 'quiero beber agua',
-                    'fecha': '01/08/2001'
-                    },
-
-                    {
-                    'id':'3',
-                    'nombre': 'no quiero cenar',
-                    'fecha': '01/08/2002'
-                    }
                 ]
             }
         },
@@ -45,7 +31,19 @@
             agregarPensamiento(pensamiento)
             {
                 this.pensamientos.unshift(pensamiento);
+            },
+
+            borrarPensamiento(index)
+            {
+                this.pensamientos.splice(index,1);
+            },
+
+            actualizarPensamiento(index, pensamiento)
+            {
+                this.pensamientos[index] = pensamiento;
             }
+
+    
 
         },
 
