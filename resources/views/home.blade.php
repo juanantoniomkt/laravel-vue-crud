@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
 
-    <inmuebles-component></inmuebles-component>
+    <pensamientos-component></pensamientos-component>
 
 </div>
 @endsection

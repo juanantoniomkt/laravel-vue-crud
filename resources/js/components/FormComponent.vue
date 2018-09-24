@@ -1,11 +1,11 @@
 <template>
     <div class="container">
 
-        <form action="" v-on:submit.prevent="nuevoInmueble()">
+        <form action="" v-on:submit.prevent="nuevoPensamiento()">
 
             <div class="form-group">
-                <label for="inmueble">Inmueble</label>
-                <input type="text" class="form-control-lg" name="inmueble" v-model="nombre" >
+                <label for="pensamiento">Pensamiento</label>
+                <input type="text" class="form-control-lg" name="pensamiento" v-model="nombre" >
             </div>
 
             <button type="submit" class="btn btn-primary">Enviar</button>
@@ -31,16 +31,16 @@
 
         methods: 
         {
-            nuevoInmueble()
+            nuevoPensamiento()
             {
-                let inmueble = 
+                let pensamiento = 
                 {
                     id:2,
                     nombre: this.nombre,
                     fecha: '11/22/3333'
                 };
 
-                this.$emit('new', inmueble);
+                this.$emit('new', pensamiento);
               
             }
         }

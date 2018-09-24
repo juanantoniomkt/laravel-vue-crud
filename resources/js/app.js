@@ -15,8 +15,8 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('inmuebles-component', require('./components/InmueblesComponent.vue'));
-Vue.component('inmueble-component', require('./components/InmuebleComponent.vue'));
+Vue.component('pensamientos-component', require('./components/PensamientosComponent.vue'));
+Vue.component('pensamiento-component', require('./components/PensamientoComponent.vue'));
 Vue.component('form-component', require('./components/FormComponent.vue'));
 
 

@@ -1,13 +1,13 @@
 <template>
     <div class="row">
 
-        <form-component @new="agregarInmueble"></form-component>
-        <inmueble-component 
-            v-for="inmueble in inmuebles" 
-            :key="inmueble.id"
-            :inmueble="inmueble"
+        <form-component @new="agregarPensamiento"></form-component>
+        <pensamiento-component 
+            v-for="pensamiento in pensamientos" 
+            :key="pensamiento.id"
+            :pensamiento="pensamiento"
             >
-        </inmueble-component>
+        </pensamiento-component>
 
     </div>
 </template>
@@ -17,22 +17,22 @@
 
         data(){
             return{
-                inmuebles:[
+                pensamientos:[
                     {
                     'id':'1',
-                    'nombre': 'piso en ronda',
+                    'nombre': 'quiero ir a la playa',
                     'fecha': '01/08/1990'
                     },
 
                     {
                     'id':'2',
-                    'nombre': 'apartamento en arriate',
+                    'nombre': 'quiero beber agua',
                     'fecha': '01/08/2001'
                     },
 
                     {
                     'id':'3',
-                    'nombre': 'loft en torremolinos',
+                    'nombre': 'no quiero cenar',
                     'fecha': '01/08/2002'
                     }
                 ]
@@ -42,9 +42,9 @@
         methods:
         {
 
-            agregarInmueble(inmueble)
+            agregarPensamiento(pensamiento)
             {
-                this.inmuebles.unshift(inmueble);
+                this.pensamientos.unshift(pensamiento);
             }
 
         },
