@@ -21,7 +21,8 @@ class PensamientoController extends Controller
      */
     public function index()
     {
-        return Pensamiento::where('user_id', auth()->id()->get());
+        return Pensamiento::where('user_id', auth()->id())->get();
+
     }
 
     /**
@@ -34,6 +35,7 @@ class PensamientoController extends Controller
     {
         $pensamiento = new Pensamiento();
         $pensamiento->nombre = $request->nombre;
+
 
         /*
         no entiendo la línea anterior
@@ -73,6 +75,8 @@ class PensamientoController extends Controller
         */
 
         $pensamiento->save();
+
+        return $pensamiento;
     }
 
     /**
@@ -85,5 +89,7 @@ class PensamientoController extends Controller
     {
         $pensamiento = Pensamiento::find($id);
         $pensamiento->delete();
+
+        return $pensamiento;
     }
 }

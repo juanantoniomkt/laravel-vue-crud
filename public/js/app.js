@@ -14012,8 +14012,8 @@ window.Vue = __webpack_require__(37);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('pensamientos-component', __webpack_require__(57));
-Vue.component('pensamiento-component', __webpack_require__(54));
+Vue.component('pensamientos-component', __webpack_require__(40));
+Vue.component('pensamiento-component', __webpack_require__(43));
 Vue.component('form-component', __webpack_require__(46));
 
 var app = new Vue({
@@ -47292,21 +47292,15 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1), __webpack_require__(7)))
 
 /***/ }),
-/* 40 */,
-/* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */,
-/* 46 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(47)
+var __vue_script__ = __webpack_require__(41)
 /* template */
-var __vue_template__ = __webpack_require__(48)
+var __vue_template__ = __webpack_require__(42)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47323,7 +47317,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/FormComponent.vue"
+Component.options.__file = "resources/js/components/PensamientosComponent.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -47332,9 +47326,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-b1dd1884", Component.options)
+    hotAPI.createRecord("data-v-5f4a2f96", Component.options)
   } else {
-    hotAPI.reload("data-v-b1dd1884", Component.options)
+    hotAPI.reload("data-v-5f4a2f96", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -47345,7 +47339,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 47 */
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47366,101 +47360,72 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-
     data: function data() {
         return {
-            nombre: ''
+            pensamientos: []
         };
     },
-
     mounted: function mounted() {
-        console.log('Component mounted.');
+        var _this = this;
+
+        axios.get('/pensamientos').then(function (response) {
+
+            _this.pensamientos = response.data;
+        });
     },
 
 
     methods: {
-        nuevoPensamiento: function nuevoPensamiento() {
+        agregarPensamiento: function agregarPensamiento(pensamiento) {
+            this.pensamientos.unshift(pensamiento);
+        },
+        borrarPensamiento: function borrarPensamiento(index) {
+            this.pensamientos.splice(index, 1);
+        },
+        actualizarPensamiento: function actualizarPensamiento(index, pensamiento) {
 
-            var params = {
-                nombre: this.nombre
-            };
-
-            axios.post('/pensamientos', params).then(function (response) {
-                return console.log(response);
-            });
-
-            var pensamiento = {
-                nombre: this.nombre,
-                fecha: '11/22/3333'
-            };
-
-            this.$emit('new', pensamiento);
-            this.nombre = '';
+            this.pensamientos[index] = pensamiento;
         }
     }
 
 });
 
 /***/ }),
-/* 48 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c(
-      "form",
-      {
-        attrs: { action: "" },
-        on: {
-          submit: function($event) {
-            $event.preventDefault()
-            _vm.nuevoPensamiento()
-          }
-        }
-      },
-      [
-        _c("div", { staticClass: "form-group" }, [
-          _c("label", { attrs: { for: "pensamiento" } }, [
-            _vm._v("Pensamiento")
-          ]),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.nombre,
-                expression: "nombre"
-              }
-            ],
-            staticClass: "form-control-lg",
-            attrs: { type: "text", name: "pensamiento" },
-            domProps: { value: _vm.nombre },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.nombre = $event.target.value
-              }
+  return _c(
+    "div",
+    { staticClass: "row" },
+    [
+      _c("form-component", { on: { new: _vm.agregarPensamiento } }),
+      _vm._v(" "),
+      _vm._l(_vm.pensamientos, function(pensamiento, index) {
+        return _c("pensamiento-component", {
+          key: pensamiento.id,
+          attrs: { pensamiento: pensamiento },
+          on: {
+            update: function($event) {
+              var i = arguments.length,
+                argsArray = Array(i)
+              while (i--) argsArray[i] = arguments[i]
+              _vm.actualizarPensamiento.apply(void 0, [index].concat(argsArray))
+            },
+            delete: function($event) {
+              _vm.borrarPensamiento(index)
             }
-          })
-        ]),
-        _vm._v(" "),
-        _c(
-          "button",
-          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-          [_vm._v("Enviar")]
-        )
-      ]
-    )
-  ])
+          }
+        })
+      })
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -47468,30 +47433,20 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-b1dd1884", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-5f4a2f96", module.exports)
   }
 }
 
 /***/ }),
-/* 49 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(55)
+var __vue_script__ = __webpack_require__(44)
 /* template */
-var __vue_template__ = __webpack_require__(56)
+var __vue_template__ = __webpack_require__(45)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47530,7 +47485,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 55 */
+/* 44 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47573,21 +47528,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         onClickDelete: function onClickDelete() {
+            var _this = this;
 
-            this.$emit('delete');
+            axios.delete('/pensamientos/' + this.pensamiento.id).then(function (data) {
+
+                console.log(data);
+
+                _this.$emit('delete');
+            });
         },
         onClickEdit: function onClickEdit() {
             this.editMode = true;
         },
         onClickUpdate: function onClickUpdate() {
-            this.editMode = false;
-            this.$emit('update', pensamiento);
+            var _this2 = this;
+
+            var params = {
+                nombre: this.pensamiento.nombre
+            };
+
+            axios.put('/pensamientos/' + this.pensamiento.id, params).then(function (response) {
+
+                _this2.editMode = false;
+
+                var pensamiento = response.data;
+
+                _this2.$emit('update', pensamiento);
+            });
         }
     }
 });
 
 /***/ }),
-/* 56 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -47682,15 +47655,15 @@ if (false) {
 }
 
 /***/ }),
-/* 57 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(3)
 /* script */
-var __vue_script__ = __webpack_require__(58)
+var __vue_script__ = __webpack_require__(47)
 /* template */
-var __vue_template__ = __webpack_require__(59)
+var __vue_template__ = __webpack_require__(48)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47707,7 +47680,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/js/components/PensamientosComponent.vue"
+Component.options.__file = "resources/js/components/FormComponent.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -47716,9 +47689,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-5f4a2f96", Component.options)
+    hotAPI.createRecord("data-v-b1dd1884", Component.options)
   } else {
-    hotAPI.reload("data-v-5f4a2f96", Component.options)
+    hotAPI.reload("data-v-b1dd1884", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -47729,7 +47702,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 58 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47750,66 +47723,97 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+
     data: function data() {
         return {
-            pensamientos: []
+            nombre: ''
         };
-    },
-
-
-    methods: {
-        agregarPensamiento: function agregarPensamiento(pensamiento) {
-            this.pensamientos.unshift(pensamiento);
-        },
-        borrarPensamiento: function borrarPensamiento(index) {
-            this.pensamientos.splice(index, 1);
-        },
-        actualizarPensamiento: function actualizarPensamiento(index, pensamiento) {
-            this.pensamientos[index] = pensamiento;
-        }
     },
 
     mounted: function mounted() {
         console.log('Component mounted.');
+    },
+
+
+    methods: {
+        nuevoPensamiento: function nuevoPensamiento() {
+            var _this = this;
+
+            var params = {
+                nombre: this.nombre
+            };
+
+            this.nombre = '';
+
+            axios.post('/pensamientos', params).then(function (response) {
+                var pensamiento = response.data;
+                _this.$emit('new', pensamiento);
+            });
+        }
     }
+
 });
 
 /***/ }),
-/* 59 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "row" },
-    [
-      _c("form-component", { on: { new: _vm.agregarPensamiento } }),
-      _vm._v(" "),
-      _vm._l(_vm.pensamientos, function(pensamiento, index) {
-        return _c("pensamiento-component", {
-          key: pensamiento.id,
-          attrs: { pensamiento: pensamiento },
-          on: {
-            update: function($event) {
-              var i = arguments.length,
-                argsArray = Array(i)
-              while (i--) argsArray[i] = arguments[i]
-              _vm.actualizarPensamiento.apply(void 0, [index].concat(argsArray))
-            },
-            delete: function($event) {
-              _vm.borrarPensamiento(index)
-            }
+  return _c("div", { staticClass: "container" }, [
+    _c(
+      "form",
+      {
+        attrs: { action: "" },
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            _vm.nuevoPensamiento()
           }
-        })
-      })
-    ],
-    2
-  )
+        }
+      },
+      [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "pensamiento" } }, [
+            _vm._v("Pensamiento")
+          ]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.nombre,
+                expression: "nombre"
+              }
+            ],
+            staticClass: "form-control-lg",
+            attrs: { type: "text", name: "pensamiento" },
+            domProps: { value: _vm.nombre },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.nombre = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+          [_vm._v("Enviar")]
+        )
+      ]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -47817,9 +47821,15 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-5f4a2f96", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-b1dd1884", module.exports)
   }
 }
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

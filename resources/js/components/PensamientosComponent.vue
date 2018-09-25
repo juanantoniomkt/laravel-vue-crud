@@ -19,10 +19,21 @@
 
         data(){
             return{
-                pensamientos:[
+                pensamientos:
+                [
 
                 ]
             }
+        },
+
+        mounted() 
+        {
+            axios.get('/pensamientos').then((response) =>
+            {
+
+            this.pensamientos = response.data;
+
+            } );
         },
 
         methods:
@@ -31,6 +42,7 @@
             agregarPensamiento(pensamiento)
             {
                 this.pensamientos.unshift(pensamiento);
+                
             },
 
             borrarPensamiento(index)
@@ -40,6 +52,9 @@
 
             actualizarPensamiento(index, pensamiento)
             {
+
+   
+
                 this.pensamientos[index] = pensamiento;
             }
 
@@ -47,8 +62,5 @@
 
         },
 
-        mounted() {
-            console.log('Component mounted.')
-        }
     }
 </script>

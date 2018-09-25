@@ -39,8 +39,17 @@
         {
             onClickDelete()
             {
+
+
+                axios.delete(`/pensamientos/${this.pensamiento.id}`).then((data) =>
+                {
+
+                    console.log(data);
+
+                    this.$emit('delete');
+
+                });
                 
-                this.$emit('delete');
             },
 
             onClickEdit()
@@ -50,8 +59,23 @@
 
             onClickUpdate()
             {
-                this.editMode = false;
-                this.$emit('update', pensamiento);
+
+                const params =
+                {
+                    nombre : this.pensamiento.nombre
+                };
+
+                axios.put(`/pensamientos/${this.pensamiento.id}`, params).then((response) =>
+                {
+                    
+                    this.editMode = false;
+
+                    const pensamiento = response.data;
+
+                    this.$emit('update', pensamiento);
+
+                });
+
 
             }
         }

@@ -21,8 +21,8 @@
 
         data: function () {
         return {
-            nombre: ''
-        }
+                    nombre: ''
+                }
         },
 
         mounted() {
@@ -40,18 +40,15 @@
                     nombre: this.nombre
                 }
 
-                axios.post('/pensamientos', params).then((response) => console.log(response));
-
-
-                let pensamiento = 
-                {
-                    nombre: this.nombre,
-                    fecha: '11/22/3333'
-                };
-
-                this.$emit('new', pensamiento);
                 this.nombre = '';
-              
+
+                axios.post('/pensamientos', params).then((response) => 
+                {
+                    const pensamiento = response.data;
+                    this.$emit('new', pensamiento);
+
+                });
+                              
             }
         }
 
